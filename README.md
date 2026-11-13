@@ -13,7 +13,7 @@ heavy dependencies.
 * **Tenant isolation** – Each request is associated with a tenant ID; data is scoped to the
   tenant.
 * **Audit logging** – Middleware records request metadata and stores logs in memory for review.
-* **Secret management** – Demonstrates loading secrets from environment variables.
+* **Demo credentials** – The example tokens are fixed fixtures for local use.
 
 ## Usage
 
@@ -37,8 +37,12 @@ The app defines two endpoints:
 curl -X POST http://localhost:8000/generate \
      -H "Authorization: Bearer secret-token" \
      -H "X-Tenant-ID: tenant1" \
+     -H "Content-Type: application/json" \
      -d '{"prompt": "Explain zero trust"}'
 ```
+
+Changing the example tenant header to `tenant2` returns HTTP 403.
+The admin audit endpoint returns entries for the authenticated tenant.
 
 ## Extending
 

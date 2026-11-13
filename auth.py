@@ -9,8 +9,8 @@ from fastapi import Depends, HTTPException, Header, status
 # In a real application this data would come from a user database or identity provider
 USERS: Dict[str, Dict[str, str]] = {
     # token: {"username": str, "role": str}
-    "secret-token": {"username": "alice", "role": "admin"},
-    "viewer-token": {"username": "bob", "role": "viewer"},
+    "secret-token": {"username": "alice", "role": "admin", "tenant_id": "tenant1"},
+    "viewer-token": {"username": "bob", "role": "viewer", "tenant_id": "tenant2"},
 }
 
 
@@ -34,7 +34,9 @@ def get_current_user(
     user_info = USERS.get(token)
     if not user_info:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
-    return User(username=user_info["username"], role=user_info["role"], tenant_id=tenant_id)
+    if tenant_id != user_info["tenant_id"]:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Tenant access denied")
+    return User(username=user_info["username"], role=user_info["role"], tenant_id=user_info["tenant_id"])
 
 
 def require_role(required_role: str):
