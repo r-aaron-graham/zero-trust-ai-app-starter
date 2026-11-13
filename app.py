@@ -89,4 +89,4 @@ async def generate(
 @app.get("/audit")
 async def get_audit(user: User = Depends(require_role("admin"))) -> List[AuditEntry]:
     """Return the current audit log entries.  Only admins may view."""
-    return audit_log.entries
+    return [entry for entry in audit_log.entries if entry.tenant_id == user.tenant_id]
