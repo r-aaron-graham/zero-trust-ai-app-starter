@@ -44,6 +44,16 @@ curl -X POST http://localhost:8000/generate \
 Changing the example tenant header to `tenant2` returns HTTP 403.
 The admin audit endpoint returns entries for the authenticated tenant.
 
+## Verify tenant scope
+
+```bash
+python -m pip install -r requirements.txt httpx
+python -m unittest discover -s tests -v
+```
+
+The tests exercise allowed generation, a mismatched tenant header, and
+audit filtering. GitHub Actions runs the same checks.
+
 ## Extending
 
 This starter is not production‑ready.  In a real system you would integrate with a
