@@ -60,3 +60,14 @@ This starter is not production‑ready.  In a real system you would integrate wi
 centralized identity provider, use a secrets manager (e.g. Vault or AWS Secrets Manager),
 persist audit logs to a database, and implement multi‑tenant data isolation at the database
 layer.  Use this template as a reference for structuring such a system.
+
+## Deployment verification
+
+Build the reviewer container from the repository root.
+
+```sh
+docker build -t reviewer-smoke .
+docker run --rm -p 127.0.0.1:8000:8000 reviewer-smoke
+```
+
+From another terminal, run `curl --fail http://127.0.0.1:8000/health`. Expect HTTP 200. Stop the container with Ctrl+C when finished. The bundled identities and tokens are fixtures. Replace them with trusted identity verification and provision tenant-specific access before any shared deployment.
